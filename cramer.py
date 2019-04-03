@@ -125,8 +125,8 @@ def gain_func(t=False):
 			atributs.remove(simpul)
 
 	# purpose
-	#sum_gains = 0.0
-	#len_gains = 0
+	sum_gains = 0.0
+	len_gains = 0
 	sum_gainscr = 0.0
 	len_gainscr = 0
 	tampung_for_zscore = {}
@@ -148,76 +148,48 @@ def gain_func(t=False):
 				count_split_info = branch_jml_kasus / root_jml_kasus
 				split_info += -(count_split_info * (math.log(count_split_info) / log2)) if count_split_info else 0.0
 				probabilitas.append(count_split_info)
-		gain = root_entropy - count_gain # info gain
-		gain_ratio = gain / split_info if gain else 0.0
-		gaincr = gain_ratio * cramersv
-		# if you want to change the split function, change in below
-		#tampung_gain.update({attr: gain_ratio})
-		tampung_gaincr.update({attr: gaincr})
-
-		########## tampung_gaincr.update({attr: gain_ratio})
-
-		# purpose
-		#sum_gains += gain_ratio
-		#len_gains += 1
-		redu_mc = 1 - max(probabilitas)
-		tampung_for_zscore.update({attr: [gain_ratio, redu_mc]})
-
-		# purposecr
-		sum_gainscr += gaincr
-		len_gainscr += 1
-		tampung_for_zscorecr.update({attr: [gaincr, redu_mc]})
+	        gain = root_entropy - count_gain # info gain
+	        gain_ratio = gain / split_info if gain else 0.0
+	        # if you want to change the split function, change in below
+	        tampung_gain.update({attr: gain_ratio})
+	        # purpose
+	        sum_gains += gain_ratio
+	        len_gains += 1
+	        redu_mc = 1 - max(probabilitas)
+	        tampung_for_zscore.update({attr: [gain_ratio, redu_mc]})
 
 	# purpose
-	#avg_gain = sum_gains / len_gains
-
-	#purposecr
-	avg_gaincr = sum_gainscr / len_gainscr
-
+	avg_gain = sum_gains/len_gains
 	# stdev calculation
-	#sum_exponent = 0.0
-	#for k, v in tampung_gain.iteritems():
-		#gain_min_avg = v - avg_gain
-		#exponent_gain_min_avg = gain_min_avg ** 2
-		#sum_exponent += exponent_gain_min_avg
-	#variant = sum_exponent / (16-1) if sum_exponent else 0.0
-	#stdev = math.sqrt(variant)
-	#tampung_performance = {}
-
-	# stdev calculation cramers
-	sum_exponentcr = 0.0
-	for k, v in tampung_gaincr.iteritems():
-		gain_min_avgcr = v - avg_gaincr
-		exponent_gain_min_avgcr = gain_min_avgcr ** 2
-		sum_exponentcr += exponent_gain_min_avgcr
-	variantcr = sum_exponentcr / (16-1) if sum_exponentcr else 0.0
-	stdev = math.sqrt(variantcr)
-	#tampung_performancecr = {}
+	sum_exponent = 0.0
+	for k, v in tampung_gain.iteritems():
+		gain_min_avg = v - avg_gain
+		exponent_gain_min_avg = gain_min_avg ** 2
+		sum_exponent += exponent_gain_min_avg
+	variant = sum_exponent / (16-1) if sum_exponent else 0.0
+	stdev = math.sqrt(variant)
 	tampung_performance = {}
-
-	for k, v in tampung_for_zscorecr.iteritems():
+	for k, v in tampung_for_zscore.iteritems():
 		gain = v[0]
-		gain_ratio = [0]
-		gaincr = v[0]
+		gain_ratio = v[0]
 		redu_mc = v[1]
-		gaincr = gain * cramersv
-		z_score = (gaincr - avg_gaincr) / stdev if (gaincr - avg_gaincr) else 0.0
+		z_score = (gain_ratio - avg_gain) / stdev if (gain_ratio - avg_gain) else 0.0
 		nilai_eksponensial = 2.718281828
 		sigmoidal = (1 - (nilai_eksponensial ** (-1 * z_score))) / (1 + (nilai_eksponensial ** (-1 * z_score)))
 		test_cost = 600.0/800.0
 		performance = (((2 ** sigmoidal) - 1) * redu_mc) / (test_cost+1)
 		tampung_performance.update({k: performance})
 
-	max_gaincr = 0.0
+	max_gain = 0.0
 	for attr in atributs:
-		for gaincr in tampung_performance:
-			if attr == gaincr:
-				if max_gaincr is 0.0 or max_gaincr < tampung_performance[gaincr]:
-					max_gaincr = tampung_performance[gaincr]
-					max_key = gaincr
+		for gain in tampung_performance:
+			if attr == gain:
+				if max_gain is 0.0 or max_gain < tampung_performance[gain]:
+					max_gain = tampung_performance[gain]
+					max_key = gain
 
-	if not max_gaincr:
-		return []
+	if not max_gain:
+			return []
 	new_root = df_entropy[df_entropy.loc[:,['simpul']].values == max_key]
 
 	term_new_root = []
@@ -249,7 +221,6 @@ if len(node_ids) < 1:
 		   node_ids.append([node])
 	   else:
 		   tampung_prediksi.append([node])
-
 if len(node_ids) >= 1:
    start_len = len(node_ids)
    i = 1
