@@ -6,10 +6,7 @@ import math
 import operator
 import numpy as np
 from sklearn import tree
-
-
-def satu():
-    print "Main.."
+import json
 
 
 ### fungsi untuk menghitung root entropy ###
@@ -36,7 +33,7 @@ def root_entropy_func(class_label, new_root):
             else:
                 logs = math.log(sum_class)
             entropy += -sum_class * (math.log(sum_class) / log2)
-        print labels_count
+        print(labels_count)
         root.update({'simpul': simpul, 'jml_kasus': jml_kasus, 'entropy': entropy})
     else:
         root = new_root[-1]
@@ -285,4 +282,4 @@ for pred_ids in tampung_prediksi:
 
 # Pohon
 #	data_prediksi = pd.DataFrame(data=tampung_prediksi))
-print 'Hasil', new_prediksi
+print 'Hasil', json.dumps(new_prediksi)

@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label=<physician_fee_freeze &le; 0.5<br/>entropy = 0.961<br/>samples = 130<br/>value = [80, 50]<br/>class = democrat>, fillcolor="#e5813960"] ;
+1 [label=<education_spending &le; 0.5<br/>entropy = 0.099<br/>samples = 78<br/>value = [77, 1]<br/>class = democrat>, fillcolor="#e58139fc"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<entropy = 0.0<br/>samples = 72<br/>value = [72, 0]<br/>class = democrat>, fillcolor="#e58139ff"] ;
+1 -> 2 ;
+3 [label=<crime &le; 0.5<br/>entropy = 0.65<br/>samples = 6<br/>value = [5, 1]<br/>class = democrat>, fillcolor="#e58139cc"] ;
+1 -> 3 ;
+4 [label=<entropy = 1.0<br/>samples = 2<br/>value = [1, 1]<br/>class = democrat>, fillcolor="#e5813900"] ;
+3 -> 4 ;
+5 [label=<entropy = 0.0<br/>samples = 4<br/>value = [4, 0]<br/>class = democrat>, fillcolor="#e58139ff"] ;
+3 -> 5 ;
+6 [label=<synfuels_corporation_cutback &le; 0.5<br/>entropy = 0.318<br/>samples = 52<br/>value = [3, 49]<br/>class = republic>, fillcolor="#399de5ef"] ;
+0 -> 6 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+7 [label=<entropy = 0.0<br/>samples = 41<br/>value = [0, 41]<br/>class = republic>, fillcolor="#399de5ff"] ;
+6 -> 7 ;
+8 [label=<handicapped_infants &le; 0.5<br/>entropy = 0.845<br/>samples = 11<br/>value = [3, 8]<br/>class = republic>, fillcolor="#399de59f"] ;
+6 -> 8 ;
+9 [label=<duty_free_exports &le; 0.5<br/>entropy = 0.985<br/>samples = 7<br/>value = [3, 4]<br/>class = republic>, fillcolor="#399de540"] ;
+8 -> 9 ;
+10 [label=<immigration &le; 0.5<br/>entropy = 0.722<br/>samples = 5<br/>value = [1, 4]<br/>class = republic>, fillcolor="#399de5bf"] ;
+9 -> 10 ;
+11 [label=<entropy = 1.0<br/>samples = 2<br/>value = [1, 1]<br/>class = democrat>, fillcolor="#e5813900"] ;
+10 -> 11 ;
+12 [label=<entropy = 0.0<br/>samples = 3<br/>value = [0, 3]<br/>class = republic>, fillcolor="#399de5ff"] ;
+10 -> 12 ;
+13 [label=<entropy = 0.0<br/>samples = 2<br/>value = [2, 0]<br/>class = democrat>, fillcolor="#e58139ff"] ;
+9 -> 13 ;
+14 [label=<entropy = 0.0<br/>samples = 4<br/>value = [0, 4]<br/>class = republic>, fillcolor="#399de5ff"] ;
+8 -> 14 ;
+}
