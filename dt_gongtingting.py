@@ -44,7 +44,7 @@ class DecisionTreeClassifier(object):
     def get_entropy(self, y_predict, y_real):
         """
         Returns entropy of a split
-        y_predict is the split decision, True/Fasle, and y_true can be multi class
+        y_predict is the split decision, True/False, and y_true can be multi class
         """
         if len(y_predict) != len(y_real):
             print('They have to be the same length')
@@ -53,7 +53,33 @@ class DecisionTreeClassifier(object):
         s_true, n_true = self.entropy_of_one_division(y_real[y_predict]) # left hand side entropy
         s_false, n_false = self.entropy_of_one_division(y_real[~y_predict]) # right hand side entropy
         s = n_true*1.0/n * s_true + n_false*1.0/n * s_false # overall entropy, again weighted average
+        # print(y_real)
+        # print(y_predict)
+        # print(~y_predict)
+        # print(s_true)
+        # print(n_true)
+        # print(s_false)
+        # print(n_false)
+        # print('------------------------------------------------')
         return s
+
+    def get_split_info(self, y_predict, y_real):
+        """
+        Returns entropy of a split
+        y_predict is the split decision, True/False, and y_true can be multi class
+        """
+        if len(y_predict) != len(y_real):
+            print('[2] They have to be the same length')
+            return None
+        n = len(y_real)
+        s_true, n_true = self.entropy_of_one_division(y_real[y_predict]) # left hand side entropy
+        s_false, n_false = self.entropy_of_one_division(y_real[~y_predict]) # right hand side entropy
+        s = n_true + n_false
+        if n_true>0 and n_false>0:
+            s = ((float(-1)) * float(n_true) / (float(n_true)+float(n_false)) * math.log(float(n_true) / (float(n_true)+float(n_false)), 2)) - (float(n_false) / (float(n_true)+float(n_false)) * math.log(float(n_false) / (float(n_true)+float(n_false)), 2))
+            return s
+        else:
+            return 0
 
     def fit(self, x, y, par_node={}, depth=0):
         if par_node is None: 
@@ -66,10 +92,18 @@ class DecisionTreeClassifier(object):
             return None
         else: 
             col, cutoff, entropy = self.find_best_split_of_all(x, y)    # find one split given an information gain 
+            split_info = self.find_best_split_of_all_split_info(x, y)    # find one split info 
             y_left = y[x[:, col] < cutoff]
             y_right = y[x[:, col] >= cutoff]
+            if split_info==0:
+                gain_ratio = 0
+            else:
+                gain_ratio = float(entropy)/float(split_info)
             par_node = {'col': header[col], 
-                        # 'index_col':col,
+                        'information gain' : entropy,
+                        'split info' : split_info,
+                        'gain ratio' : gain_ratio,
+                        'index_col':col,
                         'cutoff':cutoff,
                        'val': np.round(np.mean(y))
                        }
@@ -92,6 +126,21 @@ class DecisionTreeClassifier(object):
                 col = i
                 cutoff = cur_cutoff
         return col, cutoff, min_entropy
+
+    def find_best_split_of_all_split_info(self, x, y):
+        col = None
+        min_entropy = 1
+        cutoff = None
+        for i, c in enumerate(x.T):
+            entropy, cur_cutoff = self.find_best_split(c, y)
+            split_info = self.find_best_split_info(c, y)
+            if entropy == 0:    # find the first perfect cutoff. Stop Iterating
+                return split_info
+            elif entropy <= min_entropy:
+                min_entropy = entropy
+                col = i
+                cutoff = cur_cutoff
+        return split_info
     
     def find_best_split(self, col, y):
         min_entropy = 10
@@ -103,6 +152,18 @@ class DecisionTreeClassifier(object):
                 min_entropy = my_entropy
                 cutoff = value
         return min_entropy, cutoff
+
+    def find_best_split_info(self, col, y):
+        min_entropy = 10
+        n = len(y)
+        for value in set(col):
+            y_predict = col < value
+            my_entropy = self.get_entropy(y_predict, y)
+            my_split_info = self.get_split_info(y_predict, y)
+            if my_entropy <= min_entropy:
+                min_entropy = my_entropy
+                cutoff = value
+        return my_split_info
     
     def all_same(self, items):
         return all(x == items[0] for x in items)
