@@ -54,7 +54,7 @@ def get_split(dataset):
 			gini = gini_index(groups, class_values)
 			if gini < b_score:
 				b_index, b_value, b_score, b_groups = index, row[index], gini, groups
-	return {'index':b_index, 'value':b_value, 'groups':b_groups}
+	return {'index':b_index, 'value':b_value, 'groups':b_groups, 'gini':b_score}
  
 # Create a terminal node value
 def to_terminal(group):
