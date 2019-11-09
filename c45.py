@@ -109,8 +109,10 @@ class C45:
 		if attribute not in self.attributes:
 			raise ValueError("Attribute not listed")
 		elif len(self.attrValues[attribute]) == 1 and self.attrValues[attribute][0] == "continuous":
+			#numerik
 			return False
 		else:
+			#kategorikal
 			return True
 
 	def splitAttribute(self, curData, curAttributes):
@@ -211,6 +213,11 @@ class C45:
 			ent += num*self.log(num)
 		return ent*-1
 
+	def chisquare(self,unionSet, subsets):
+		return 1
+
+	def cramer(self,unionSet, subsets):
+		return 1
 
 	def log(self, x):
 		if x == 0:
