@@ -128,11 +128,7 @@ class DecisionTreeClassifier(object):
         return col, cutoff, min_entropy
 
     def find_best_split_of_all_split_info(self, x, y):
-        col = None
-        min_entropy = 1
-        cutoff = None
         for i, c in enumerate(x.T):
-            entropy, cur_cutoff = self.find_best_split(c, y)
             split_info = self.find_best_split_info(c, y)
         return split_info
     

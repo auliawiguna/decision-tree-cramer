@@ -138,7 +138,7 @@ class DecisionTreeClassifier(object):
     
     def find_best_split(self, col, y):
         min_entropy = 10
-        min_gain_ratio = 10
+        min_gain_ratio = 0
         n = len(y)
         for value in set(col):
             y_predict = col < value
@@ -149,7 +149,7 @@ class DecisionTreeClassifier(object):
             else:
                 gain_ratio = float(my_entropy)/float(my_split_info)
 
-            if gain_ratio <= min_gain_ratio:
+            if gain_ratio >= min_gain_ratio:
                 min_gain_ratio = gain_ratio
                 cutoff = value
         return min_gain_ratio, cutoff
