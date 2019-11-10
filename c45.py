@@ -184,19 +184,47 @@ class C45:
 		for i in range(len(subsets)):
 			#weights[i] adalah jumlah kasus per kelas / jumlah seluruh kasus
 			#jumlah kasus per kelas / jumlah seluruh kasus * entropi
-			impurityAfterSplit += float(weights[i])*self.entropy(subsets[i])
+			impurityAfterSplit += float(weights[i])*self.entropy(subsets[i], i)
 
 		#calculate total gain
 		totalGain = impurityBeforeSplit - impurityAfterSplit
 		gainRatio = float(totalGain)/float(split_info_value)
 		# print('Gain = ', totalGain , ', Split Info = ', split_info_value,', gainRatio = ', gainRatio)
+
+
 		if self.criterion=='information_gain':
 			return totalGain
 		elif self.criterion=='gain_ratio':
 			return gainRatio
 		return totalGain
 
-	def entropy(self, dataSet):
+	def chisquare(self, unionSet, subsets):
+		#input : data and disjoint subsets of it
+		#output : information gain
+		#S adalah jumlah seluruh data dalam dataset
+		S = len(unionSet)
+		#calculate impurity before split
+		impurityBeforeSplit = self.entropy(unionSet)
+		#calculate impurity after split
+		weights = []
+
+		#calculate split info value
+		split_info_value=0
+		for i, subset in enumerate(subsets):
+			#len(subset) adalah jumlah kasus per kelas
+			weights.append(float(float(len(subset))/float(S)))
+			split_info_value -= float(float(len(subset))/float(S)) * math.log(float(float(len(subset))/float(S)), 2)
+		impurityAfterSplit = 0.0
+		for i in range(len(subsets)):
+			#weights[i] adalah jumlah kasus per kelas / jumlah seluruh kasus
+			#jumlah kasus per kelas / jumlah seluruh kasus * entropi
+			impurityAfterSplit += float(weights[i])*self.entropy(subsets[i], i)
+
+		#calculate total gain
+		totalGain = impurityBeforeSplit - impurityAfterSplit
+		gainRatio = float(totalGain)/float(split_info_value)
+
+	def entropy(self, dataSet, main_index=0):
 		S = len(dataSet)
 		if S == 0:
 			return 0
@@ -205,21 +233,23 @@ class C45:
 		for index, i in enumerate(self.classes):
 			num_classes.append(0)
 
+		class_temp = []
 		for row in dataSet:
 			classIndex = list(self.classes).index(row[-1])
 			num_classes[classIndex] += 1
+			
 		num_classes_temp = []
 		for index, x in enumerate(num_classes):
+			#x = jumlah kasus per kelas (kelas A + kelas n)
+			#S = jumlah kasus seluruh kelas
 			num_classes_temp.append(float(x)/float(S))
 		# num_classes = [x/S for x in num_classes]
 		num_classes = num_classes_temp
 		ent = 0
 		for num in num_classes:
-			ent += num*self.log(num)
+			#num adalah target label / jumlah kasus per record
+			ent += num * self.log(num)
 		return ent*-1
-
-	def chisquare(self,unionSet, subsets):
-		return 1
 
 	def cramer(self,unionSet, subsets):
 		return 1
