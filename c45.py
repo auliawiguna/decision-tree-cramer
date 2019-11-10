@@ -2,9 +2,10 @@ import math
 class C45:
 
 	"""Creates a decision tree with C4.5 algorithm"""
-	def __init__(self, pathToData,pathToNames):
+	def __init__(self, pathToData,pathToNames,criterion):
 		self.filePathToData = pathToData
 		self.filePathToNames = pathToNames
+		self.criterion = criterion
 		self.data = []
 		self.classes = []
 		self.numAttributes = -1 
@@ -134,7 +135,7 @@ class C45:
 						if row[i] == valuesForAttribute[index]:
 							subsets[index].append(row)
 							break
-				e = gain(curData, subsets)
+				e = self.gain(curData, subsets)
 				if e > maxEnt:
 					maxEnt = e
 					splitted = subsets
@@ -189,6 +190,10 @@ class C45:
 		totalGain = impurityBeforeSplit - impurityAfterSplit
 		gainRatio = float(totalGain)/float(split_info_value)
 		# print('Gain = ', totalGain , ', Split Info = ', split_info_value,', gainRatio = ', gainRatio)
+		if self.criterion=='information_gain':
+			return totalGain
+		elif self.criterion=='gain_ratio':
+			return gainRatio
 		return totalGain
 
 	def entropy(self, dataSet):
