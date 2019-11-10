@@ -1,0 +1,101 @@
+Picked_Hero,Role,Item_1,Item_2,Item_3,Item_4,Item_5,Item_6,Gold,Result
+Nana,Mage,Immortality,Arcane Boots,Ares Belt,Warrior Boots,Windtalker,Haas Claw,8765,Victory
+Roger,Marksman,Oracle,Windtalker,Arcane Boots,Warrior Boots,Ares Belt,Immortality,6443,Victory
+Minotaur,Tank,Windtalker,Haas Claw,Curse Sword,Ares Belt,Immortality,Haas Claw,7546,Victory
+Aldous,Aldous,Arcane Boots,Oracle,Exotic Veil,Warrior Boots,Divine Glaive,Immortality,9844,Victory
+Harith,Mage,Curse Sword,Windtalker,Arcane Boots,Immortality,Divine Glaive,Haas Claw,10006,Victory
+Chou,Fighter,Arcane Boots,Exotic Veil,Demon Wings,Haas Claw,Curse Sword,Ares Belt,5645,Defeat
+Chang\'e,Mage,Windtalker,Demon Wings,Haas Claw,Warrior Boots,Arcane Boots,Exotic Veil,12977,Defeat
+Sun,Fighter,Demon Wings,Haas Claw,Oracle,Warrior Boots,Ares Belt,Divine Glaive,11048,Defeat
+Nana,Mage,Windtalker,Haas Claw,Arcane Boots,Ares Belt,Curse Sword,Immortality,10709,Defeat
+Irithel,Marksman,Windtalker,Oracle,Exotic Veil,Haas Claw,Immortality,Demon Wings,12678,Defeat
+Lunox,Mage,Oracle,Arcane Boots,Ares Belt,Haas Claw,Divine Glaive,Demon Wings,10978,Defeat
+Sun,Fighter,Arcane Boots,Divine Glaive,Haas Claw,Ares Belt,Divine Glaive,Curse Sword,9045,Defeat
+Layla,Marksman,Exotic Veil,Divine Glaive,Arcane Boots,Warrior Boots,Divine Glaive,Curse Sword,8734,Defeat
+Roger,Marksman,Windtalker,Warrior Boots,Haas Claw,Arcane Boots,Ares Belt,Curse Sword,8021,Defeat
+Chou,Fighter,Windtalker,Exotic Veil,Ares Belt,Arcane Boots,Curse Sword,Demon Wings,7743,Defeat
+Kagura,Mage,Arcane Boots,Divine Glaive,Haas Claw,Warrior Boots,Curse Sword,Immortality,13654,Victory
+Harley,Mage,Curse Sword,Immortality,Haas Claw,Divine Glaive,Arcane Boots,Demon Wings,12437,Victory
+Sun,Fighter,Immortality,Windtalker,Haas Claw,Curse Sword,Exotic Veil,Demon Wings,12889,Victory
+Nana,Mage,Curse Sword,Windtalker,Immortality,Curse Sword,Warrior Boots,Arcane Boots,12556,Victory
+Layla,Marksman,Windtalker,Oracle,Haas Claw,Immortality,Divine Glaive,Arcane Boots,8732,Victory
+Karrie,Marksman,Curse Sword,Windtalker,Arcane Boots,Warrior Boots,Divine Glaive,Warrior Boots,9442,Victory
+Granger,Marksman,Haas Claw,Demon Wings,Immortality,Windtalker,Curse Sword,Oracle,17433,Victory
+Eudora,Mage,Oracle,Arcane Boots,Demon Wings,Warrior Boots,Curse Sword,Warrior Boots,15663,Victory
+Thamuz,Fighter,Haas Claw,Demon Wings,Arcane Boots,Windtalker,Immortality,Exotic Veil,19471,Victory
+Alucard,Fighter,Arcane Boots,Windtalker,Demon Wings,Curse Sword,Exotic Veil,Warrior Boots,17015,Victory
+Lesley,Assassin,Haas Claw,Curse Sword,Windtalker,Arcane Boots,Exotic Veil,Ares Belt,15030,Defeat
+Sun,Fighter,Oracle,Curse Sword,Arcane Boots,Demon Wings,Warrior Boots,Divine Glaive,14689,Defeat
+Eudora,Mage,Arcane Boots,Oracle,Demon Wings,Ares Belt,Exotic Veil,Immortality,14477,Defeat
+Alucard,Fighter,Windtalker,Haas Claw,Arcane Boots,Oracle,Divine Glaive,Curse Sword,16177,Defeat
+Kaja,Fighter,Haas Claw,Exotic Veil,Oracle,Arcane Boots,Divine Glaive,Ares Belt,18960,Defeat
+Zilong,Fighter,Windtalker,Haas Claw,Demon Wings,Exotic Veil,Arcane Boots,Ares Belt,17344,Defeat
+Layla,Marksman,Windtalker,Exotic Veil,Haas Claw,Arcane Boots,Demon Wings,Warrior Boots,16332,Defeat
+Roger,Marksman,Windtalker,Ares Belt,Arcane Boots,Warrior Boots,Haas Claw,Divine Glaive,14566,Defeat
+Alice,Mage,Arcane Boots,Exotic Veil,Windtalker,Haas Claw,Immortality,Divine Glaive,12335,Defeat
+Nana,Mage,Exotic Veil,Curse Sword,Arcane Boots,Haas Claw,Demon Wings,Ares Belt,14890,Defeat
+Sun,Fighter,Oracle,Arcane Boots,Haas Claw,Exotic Veil,Divine Glaive,Curse Sword,12847,Victory
+Johnson,Tank,Curse Sword,Haas Claw,Windtalker,Arcane Boots,Divine Glaive,Immortality,9733,Victory
+Harith,Mage,Curse Sword,Arcane Boots,Immortality,Exotic Veil,Windtalker,Warrior Boots,10067,Victory
+Harley,Mage,Demon Wings,Oracle,Arcane Boots,Immortality,Windtalker,Warrior Boots,10500,Victory
+Layla,Marksman,Oracle,Curse Sword,Demon Wings,Arcane Boots,Warrior Boots,Divine Glaive,13622,Victory
+Fanny,Assassin,Haas Claw,Arcane Boots,Oracle,Windtalker,Divine Glaive,Ares Belt,12657,Defeat
+Saber,Assassin,Arcane Boots,Haas Claw,Curse Sword,Windtalker,Ares Belt,Immortality,11345,Defeat
+Nana,Mage,Windtalker,Demon Wings,Arcane Boots,Curse Sword,Divine Glaive,Exotic Veil,16834,Defeat
+Harley,Mage,Demon Wings,Ares Belt,Oracle,Haas Claw,Divine Glaive,Warrior Boots,16834,Defeat
+Lancelot,Assassin,Exotic Veil,Haas Claw,Windtalker,Arcane Boots,Curse Sword,Ares Belt,14778,Defeat
+Grock,Tank,Oracle,Haas Claw,Exotic Veil,Arcane Boots,Curse Sword,Demon Wings,13224,Victory
+Franco,Tank,Windtalker,Arcane Boots,Haas Claw,Immortality,Oracle,Warrior Boots,13521,Victory
+Nana,Mage,Arcane Boots,Oracle,Warrior Boots,Demon Wings,Exotic Veil,Immortality,15661,Victory
+Kadita,Mage,Windtalker,Arcane Boots,Haas Claw,Ares Belt,Curse Sword,Demon Wings,9454,Victory
+Harith,Mage,Oracle,Exotic Veil,Arcane Boots,Warrior Boots,Curse Sword,Ares Belt,11913,Victory
+Irither,Marksman,Windtalker,Exotic Veil,Oracle,Immortality,Warrior Boots,Arcane Boots,13423,Victory
+Khufra,Tank,Windtalker,Exotic Veil,Haas Claw,Arcane Boots,Immortality,Divine Glaive,12157,Victory
+Angela,Support,Arcane Boots,Oracle,Warrior Boots,Demon Wings,Curse Sword,Divine Glaive,12018,Victory
+Johnson,Tanks,Demon Wings,Haas Claw,Arcane Boots,Warrior Boots,Curse Sword,Immortality,13059,Victory
+Hayabusa,Assassin,Windtalker,Immortality,Oracle,Arcane Boots,Curse Sword,Divine Glaive,11348,Victory
+Uranus,Tank,Windtalker,Arcane Boots,Immortality,Haas Claw,Warrior Boots,Demon Wings,10991,Defeat
+Khufra,Tank,Demon Wings,Windtalker,Windtalker,Arcane Boots,Exotic Veil,Divine Glaive,9425,Defeat
+Sun,Fighter,Windtalker,Haas Claw,Demon Wings,Exotic Veil,Divine Glaive,Ares Belt,8334,Defeat
+Roger,Marksman,Oracle,Arcane Boots,Oracle,Haas Claw,Warrior Boots,Demon Wings,13125,Defeat
+Miya,Marksman,Arcane Boots,Exotic Veil,Ares Belt,Haas Claw,Divine Glaive,Immortality,10237,Defeat
+Franco,Tank,Curse Sword,Exotic Veil,Haas Claw,Oracle,Arcane Boots,Demon Wings,13210,Victory
+Sun,Fighter,Windtalker,Haas Claw,Immortality,Arcane Boots,Demon Wings,Oracle,13322,Victory
+Harith,Mage,Arcane Boots,Immortality,Exotic Veil,Haas Claw,Divine Glaive,Ares Belt,12156,Victory
+Alucard,Assassin,Curse Sword,Arcane Boots,Warrior Boots,Demon Wings,Haas Claw,Immortality,14013,Victory
+Gord,Mage,Windtalker,Arcane Boots,Demon Wings,Immortality,Exotic Veil,Oracle,15703,Victory
+Chang\'e,Mage,Windtalker,Curse Sword,Haas Claw,Arcane Boots,Warrior Boots,Demon Wings,1221,Defeat
+Cyclops,Mage,Windtalker,Haas Claw,Arcane Boots,Demon Wings,Divine Glaive,Oracle,19035,Defeat
+Chou,Fighter,Demon Wings,Curse Sword,Oracle,Arcane Boots,Haas Claw,Ares Belt,12030,Defeat
+Gord,Mage,Oracle,Haas Claw,Arcane Boots,Ares Belt,Demon Wings,Curse Sword,13119,Defeat
+Sun,Fighter,Windtalker,Haas Claw,Demon Wings,Oracle,Immortality,Arcane Boots,12507,Defeat
+Layla,Marksman,Haas Claw,Ares Belt,Curse Sword,Arcane Boots,Divine Glaive,Demon Wings,15067,Defeat
+Roger,Marksman,Haas Claw,Exotic Veil,Curse Sword,Oracle,Divine Glaive,Arcane Boots,11020,Defeat
+Nana,Mage,Oracle,Arcane Boots,Haas Claw,Exotic Veil,Divine Glaive,Demon Wings,17014,Defeat
+Balmond,Tank,Windtalker,Curse Sword,Oracle,Arcane Boots,Demon Wings,Ares Belt,14912,Defeat
+Harith,Mage,Demon Wings,Arcane Boots,Haas Claw,Exotic Veil,Ares Belt,Immortality,14036,Defeat
+Sun,Fighter,Oracle,Demon Wings,Haas Claw,Arcane Boots,Exotic Veil,Curse Sword,13235,Victory
+Lesley,Marksman,Windtalker,Arcane Boots,Immortality,Exotic Veil,Demon Wings,Warrior Boots,14010,Victory
+Eudora,Mage,Curse Sword,Demon Wings,Windtalker,Warrior Boots,Arcane Boots,Immortality,19325,Victory
+Tigreal,Tank,Arcane Boots,Haas Claw,Exotic Veil,Windtalker,Immortality,Divine Glaive,15210,Victory
+Nana,Mage,Curse Sword,Arcane Boots,Immortality,Haas Claw,Demon Wings,Divine Glaive,14389,Victory
+Saber,Assassin,Oracle,Warrior Boots,Arcane Boots,Ares Belt,Divine Glaive,Demon Wings,13177,Victory
+Aldous,Fighter,Curse Sword,Oracle,Exotic Veil,Warrior Boots,Arcane Boots,Immortality,16227,Victory
+Thamuz,Tank,Curse Sword,Arcane Boots,Exotic Veil,Haas Claw,Immortality,Demon Wings,18911,Victory
+Nana,Mage,Arcane Boots,Haas Claw,Warrior Boots,Immortality,Demon Wings,Divine Glaive,19541,Victory
+Chang\'e,Mage,Demon Wings,Curse Sword,Arcane Boots,Exotic Veil,Immortality,Divine Glaive,13982,Victory
+Minotaur,Tank,Demon Wings,Arcane Boots,Curse Sword,Windtalker,Divine Glaive,Ares Belt,9512,Defeat
+Miya,Marksman,Arcane Boots,Demon Wings,Windtalker,Exotic Veil,Divine Glaive,Immortality,12235,Defeat
+Lesley,Assassin,Demon Wings,Oracle,Arcane Boots,Curse Sword,Warrior Boots,Windtalker,9212,Defeat
+Nana,Mage,Oracle,Haas Claw,Demon Wings,Ares Belt,Arcane Boots,Divine Glaive,9615,Defeat
+Roger,Marksman,Haas Claw,Arcane Boots,Oracle,Exotic Veil,Demon Wings,Divine Glaive,11007,Defeat
+Irithel,Marksman,Haas Claw,Curse Sword,Oracle,Arcane Boots,Windtalker,Demon Wings,9028,Defeat
+Miya,Marksman,Demon Wings,Ares Belt,Arcane Boots,Warrior Boots,Windtalker,Divine Glaive,11019,Defeat
+Akai,Tank,Ares Belt,Arcane Boots,Oracle,Windtalker,Exotic Veil,Demon Wings,13654,Defeat
+Aldous,Fighter,Haas Claw,Demon Wings,Windtalker,Arcane Boots,Divine Glaive,Ares Belt,9718,Defeat
+Roger,Marksman,Oracle,Haas Claw,Arcane Boots,Exotic Veil,Ares Belt,Demon Wings,11336,Defeat
+Nana,Mage,Curse Sword,Warrior Boots,Arcane Boots,Haas Claw,Exotic Veil,Immortality,10232,Victory
+Irithel,Marksman,Curse Sword,Arcane Boots,Warrior Boots,Windtalker,Immortality,Divine Glaive,18543,Victory
+Sun,Fighter,Arcane Boots,Demon Wings,Oracle,Immortality,Exotic Veil,Divine Glaive,13323,Victory
+Tigreal,Tank,Curse Sword,Warrior Boots,Oracle,Haas Claw,Immortality,Arcane Boots,12633,Victory
+Gord,Mage,Oracle,Warrior Boots,Arcane Boots,Immortality,Windtalker,Divine Glaive,13432,Victory

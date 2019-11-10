@@ -1,0 +1,10 @@
+Victory, Defeat
+Picked_Hero : categorical,wededed
+Role : categorical
+Item 1 : categorical
+Item 2 : categorical
+Item 3 : categorical
+Item 4 : categorical
+Item 5 : categorical
+Item 6 : categorical
+Gold : continuous

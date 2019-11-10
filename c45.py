@@ -2,6 +2,7 @@ import math
 from sklearn.model_selection import KFold
 from operator import itemgetter
 from sklearn import metrics
+from collections import OrderedDict
 class C45:
 
 	"""Creates a decision tree with C4.5 algorithm"""
@@ -12,7 +13,7 @@ class C45:
 		self.data = []
 		self.classes = []
 		self.numAttributes = -1 
-		self.attrValues = {}
+		self.attrValues = OrderedDict()
 		self.attributes = []
 		self.tree = None
 
@@ -73,6 +74,13 @@ class C45:
 		for index, record in enumerate(dataTest):
 			prediction = self._predict(self.tree, record, index)
 			arrResult.append(prediction)
+
+		for index, target_list in enumerate(arrResult):
+			if type(target_list)=='NoneType':
+				arrResult[index]=str('false')
+			else:
+				arrResult[index]=str(target_list)
+			pass
 		return arrResult
 
 	def _predict(self, node, dataTest, indexTest=0):
@@ -83,7 +91,7 @@ class C45:
 					for index,child in enumerate(node.children):
 						if child.isLeaf:
 							if dataTest[indexAttribute]==self.attributes[index]:
-								return child.label
+								return str(child.label)
 							# print(indent + node.label + " = " + self.attributes[index] + " : " + child.label)
 						else:
 							return self._predict(child, dataTest, indexTest)
@@ -95,7 +103,7 @@ class C45:
 						if attribute==node.label:
 							# print('[1][<=] attribute ', attribute ,' dataTest[indexAttribute] ', dataTest[indexAttribute], ' node.threshold ', node.threshold)
 							if float(dataTest[indexAttribute]) <= float(node.threshold) :
-								return leftChild.label
+								return str(leftChild.label)
 						# print(indent + node.label + " <= " + str(node.threshold) + " : " + leftChild.label)
 					else:
 						# print(indent + node.label + " <= " + str(node.threshold)+" : ")
@@ -103,10 +111,9 @@ class C45:
 
 					if rightChild.isLeaf:
 						if attribute==node.label:
-							return rightChild.label
 							# print('[2][>] attribute ', attribute ,' dataTest[indexAttribute] ', dataTest[indexAttribute], ' node.threshold ', node.threshold)
 							if float(dataTest[indexAttribute]) > float(node.threshold):
-								return rightChild.label
+								return str(rightChild.label)
 						# print(indent + node.label + " > " + str(node.threshold) + " : " + rightChild.label)
 					else:
 						# print(indent + node.label + " > " + str(node.threshold) + " : ")
@@ -134,7 +141,8 @@ class C45:
 		else:
 			(best,best_threshold,splitted) = self.splitAttribute(curData, curAttributes)
 			remainingAttributes = curAttributes[:]
-			remainingAttributes.remove(best)
+			if best in remainingAttributes:
+				remainingAttributes.remove(best)
 			node = Node(False, best, best_threshold)
 			node.children = [self.recursiveGenerateTree(subset, remainingAttributes) for subset in splitted]
 			return node
@@ -149,6 +157,8 @@ class C45:
 
 
 	def allSameClass(self, data):
+		if len(data)==0:
+			return False
 		for row in data:
 			if row[-1] != data[0][-1]:
 				return False
@@ -177,10 +187,11 @@ class C45:
 				#different values of attribute i. Choose the attribute with
 				#the max gain
 				valuesForAttribute = self.attrValues[attribute]
+				# subsets = []
 				subsets = [[] for a in valuesForAttribute]
 				for row in curData:
 					for index in range(len(valuesForAttribute)):
-						if row[i] == valuesForAttribute[index]:
+						if row[index] == valuesForAttribute[index]:
 							subsets[index].append(row)
 							break
 				e = self.gain(curData, subsets)
@@ -196,7 +207,8 @@ class C45:
 				curData.sort(key = lambda x: x[indexOfAttribute])
 				for j in range(0, len(curData) - 1):
 					if curData[j][indexOfAttribute] != curData[j+1][indexOfAttribute]:
-						threshold = (curData[j][indexOfAttribute] + curData[j+1][indexOfAttribute]) / 2
+						# threshold = (curData[j][indexOfAttribute] + curData[j+1][indexOfAttribute]) / 2
+						threshold = (curData[j][indexOfAttribute] + curData[j+1][indexOfAttribute]) / self.threshold
 						less = []
 						greater = []
 						for row in curData:
@@ -205,7 +217,8 @@ class C45:
 							else:
 								less.append(row)
 						e = self.gain(curData, [less, greater])
-						if e >= maxEnt:
+						# if e >= maxEnt:
+						if e > maxEnt:
 							splitted = [less, greater]
 							maxEnt = e
 							best_attribute = attribute
@@ -227,21 +240,32 @@ class C45:
 		for i, subset in enumerate(subsets):
 			#len(subset) adalah jumlah kasus per kelas
 			weights.append(float(float(len(subset))/float(S)))
-			split_info_value -= float(float(len(subset))/float(S)) * math.log(float(float(len(subset))/float(S)), 2)
+			if len(subset)==0:
+				split_info_value=0
+			else:
+				split_info_value -= float(float(len(subset))/float(S)) * math.log(float(float(len(subset))/float(S)), 2)
 		impurityAfterSplit = 0.0
 
 		chiValue = 0
 		for i in range(len(subsets)):
 			#weights[i] adalah jumlah kasus per kelas / jumlah seluruh kasus
-			#jumlah kasus per kelas / jumlah seluruh kasus * entropi
+			#jumlah kasus per kelas / jumlah seluruh kasus * entrop
 			impurityAfterSplit += float(weights[i]) * self.entropy(subsets[i], i)
 			#chiValue adalah kolom W di excel
 			chiValue += self.chisquare(subsets[i], i)
-
 		#calculate total gain
 		totalGain = impurityBeforeSplit - impurityAfterSplit
-		gainRatio = float(totalGain)/float(split_info_value)
+
+		if len(subset)==0 or split_info_value==0:
+			gainRatio=0
+		else:
+			gainRatio = float(totalGain)/float(split_info_value)
+		
 		cramerValue = self.cramer(chiValue, float(S))
+
+		totalGain = float("{0:.5f}".format(totalGain))
+		gainRatio = float("{0:.5f}".format(gainRatio))
+		cramerValue = float("{0:.5f}".format(cramerValue))
 		gainRatioPowCramerValue = math.pow(gainRatio, cramerValue)
 		# print('Gain = ', totalGain , ', Split Info = ', split_info_value,', gainRatio = ', gainRatio)
 
@@ -253,7 +277,7 @@ class C45:
 		elif self.criterion=='cramer':
 			return gainRatioPowCramerValue
 
-		return totalGain
+		# return totalGain
 
 	def chisquare(self, dataSet, main_index=0):
 		S = len(dataSet)
@@ -312,7 +336,13 @@ class C45:
 			num_classes.append(0)
 
 		class_temp = []
-		for row in dataSet:
+		for indexdataSet,row in enumerate(dataSet):
+			# print(row, ' : ',row[-1])
+			# if row[-1]=='1':
+			# 	print 'Debug Index ', main_index, ' in index ',indexdataSet,' : '
+			# 	print dataSet
+			# 	print 'Length of dataset : ', len(dataSet)
+			# 	print len(row), '-', row[-1]
 			classIndex = list(self.classes).index(row[-1])
 			num_classes[classIndex] += 1
 			
@@ -344,12 +374,15 @@ class C45:
 	def setValidationValue(self, x):
 		self.x_validation = x
 
+	def setThreshold(self, x):
+		self.threshold = x
+
 	def makeModelXValidation(self, x_validation):
 		cv = KFold(n_splits = x_validation, random_state=42, shuffle=False)
 		# print(self.data[1])
 		incrementTest=1
 		
-		akurasi = 0;
+		akurasi = float(0)
 		for train_index, test_index in cv.split(self.data):
 			# print("Train Index: ", train_index, "\n")
 			# print("Test Index: ", test_index)
@@ -365,10 +398,10 @@ class C45:
 			#tampung hasil klasifikasi
 			Y_predict = self.predict(X_test)
 
-			#akurasi
+			print '-----------------------------------------------------Tree ke ',incrementTest,'----------------------------------------------------------------'
 			akurasi += metrics.accuracy_score(Y_test, Y_predict)
 
-			print '-----------------------------------------------------Tree ke ',incrementTest,'----------------------------------------------------------------'
+
 			self.printTree()
 			incrementTest += 1
 		print 'Akurasi : ', float(akurasi)/float(x_validation) * 100

@@ -1,0 +1,10 @@
+benign,malignant
+Clump Thickness : continuous
+Uniformity of Cell Size : continuous
+Uniformity of Cell Shape : continuous
+Marginal Adhesion : continuous
+Single Epithelial Cell Size : continuous
+Bare Nuclei : continuous
+Bland Chromatin : continuous
+Normal Nucleoli : continuous
+Mitoses : continuous
