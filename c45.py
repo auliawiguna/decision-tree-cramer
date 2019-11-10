@@ -181,14 +181,20 @@ class C45:
 			weights.append(float(float(len(subset))/float(S)))
 			split_info_value -= float(float(len(subset))/float(S)) * math.log(float(float(len(subset))/float(S)), 2)
 		impurityAfterSplit = 0.0
+
+		chiValue = 0
 		for i in range(len(subsets)):
 			#weights[i] adalah jumlah kasus per kelas / jumlah seluruh kasus
 			#jumlah kasus per kelas / jumlah seluruh kasus * entropi
-			impurityAfterSplit += float(weights[i])*self.entropy(subsets[i], i)
+			impurityAfterSplit += float(weights[i]) * self.entropy(subsets[i], i)
+			#chiValue adalah kolom W di excel
+			chiValue += self.chisquare(subsets[i], i)
 
 		#calculate total gain
 		totalGain = impurityBeforeSplit - impurityAfterSplit
 		gainRatio = float(totalGain)/float(split_info_value)
+		cramerValue = self.cramer(chiValue, float(S))
+		gainRatioPowCramerValue = math.pow(gainRatio, cramerValue)
 		# print('Gain = ', totalGain , ', Split Info = ', split_info_value,', gainRatio = ', gainRatio)
 
 
@@ -196,33 +202,57 @@ class C45:
 			return totalGain
 		elif self.criterion=='gain_ratio':
 			return gainRatio
+		elif self.criterion=='cramer':
+			return gainRatioPowCramerValue
+			
 		return totalGain
 
-	def chisquare(self, unionSet, subsets):
-		#input : data and disjoint subsets of it
-		#output : information gain
-		#S adalah jumlah seluruh data dalam dataset
-		S = len(unionSet)
-		#calculate impurity before split
-		impurityBeforeSplit = self.entropy(unionSet)
-		#calculate impurity after split
-		weights = []
+	def chisquare(self, dataSet, main_index=0):
+		S = len(dataSet)
+		if S == 0:
+			return 0
+		# num_classes = [0 for i in self.classes]
+		num_classes = []
+		for index, i in enumerate(self.classes):
+			num_classes.append(0)
 
-		#calculate split info value
-		split_info_value=0
-		for i, subset in enumerate(subsets):
-			#len(subset) adalah jumlah kasus per kelas
-			weights.append(float(float(len(subset))/float(S)))
-			split_info_value -= float(float(len(subset))/float(S)) * math.log(float(float(len(subset))/float(S)), 2)
-		impurityAfterSplit = 0.0
-		for i in range(len(subsets)):
-			#weights[i] adalah jumlah kasus per kelas / jumlah seluruh kasus
-			#jumlah kasus per kelas / jumlah seluruh kasus * entropi
-			impurityAfterSplit += float(weights[i])*self.entropy(subsets[i], i)
+		for row in dataSet:
+			classIndex = list(self.classes).index(row[-1])
+			num_classes[classIndex] += 1
+			
+		num_classes_temp = []
+		num_classes_total_per_class = {}
+		for index, x in enumerate(num_classes):
+			num_classes_total_per_class[index]=0
 
-		#calculate total gain
-		totalGain = impurityBeforeSplit - impurityAfterSplit
-		gainRatio = float(totalGain)/float(split_info_value)
+		for index, x in enumerate(num_classes):
+			#x = jumlah kasus per kelas (kelas A + kelas n) -- di excel adalah P6
+			#S = jumlah kasus seluruh kelas -- di excel adalah O6
+			num_classes_temp.append(float(x)/float(S))
+			#num_classes_total_per_class di excel adalah P9
+			num_classes_total_per_class[index]+=float(x)
+
+		num_classes = num_classes_temp
+
+		#start menghitung chi
+		#array_chi di excel adalah kolom S
+		array_chi = {}
+		sum_chi = 0
+		for index, x in enumerate(num_classes):
+			array_chi[index]=0
+
+		for index, x in enumerate(num_classes):
+			chi = float(float(x) * float(num_classes_total_per_class[index])) / float(S)
+			#((P6-S6)^2)/S6
+			if chi==0.0:
+				array_chi[index] += 0
+				sum_chi += 0
+			else:
+				array_chi[index] += (math.pow(float(x) - float(chi), 2)) / chi
+				sum_chi += (math.pow(float(x) - float(chi), 2)) / chi
+		#sum_chi adalah nilai chi per kelas
+		#end menghitung chi
+		return sum_chi
 
 	def entropy(self, dataSet, main_index=0):
 		S = len(dataSet)
@@ -239,20 +269,23 @@ class C45:
 			num_classes[classIndex] += 1
 			
 		num_classes_temp = []
+
 		for index, x in enumerate(num_classes):
-			#x = jumlah kasus per kelas (kelas A + kelas n)
-			#S = jumlah kasus seluruh kelas
+			#x = jumlah kasus per kelas (kelas A + kelas n) -- di excel adalah P6
+			#S = jumlah kasus seluruh kelas -- di excel adalah O6
 			num_classes_temp.append(float(x)/float(S))
-		# num_classes = [x/S for x in num_classes]
+
 		num_classes = num_classes_temp
+
 		ent = 0
 		for num in num_classes:
 			#num adalah target label / jumlah kasus per record
 			ent += num * self.log(num)
 		return ent*-1
 
-	def cramer(self,unionSet, subsets):
-		return 1
+	def cramer(self, chiValue=0, totalChase=0):
+		#=W6/(14*(2-1))
+		return math.sqrt(float(chiValue) / float(totalChase))
 
 	def log(self, x):
 		if x == 0:
