@@ -1,5 +1,7 @@
 import math
 from sklearn.model_selection import KFold
+from operator import itemgetter
+from sklearn import metrics
 class C45:
 
 	"""Creates a decision tree with C4.5 algorithm"""
@@ -46,9 +48,9 @@ class C45:
 				#discrete
 				for index,child in enumerate(node.children):
 					if child.isLeaf:
-						print(indent + node.label + " = " + attributes[index] + " : " + child.label)
+						print(indent + node.label + " = " + self.attributes[index] + " : " + child.label)
 					else:
-						print(indent + node.label + " = " + attributes[index] + " : ")
+						print(indent + node.label + " = " + self.attributes[index] + " : ")
 						self.printNode(child, indent + "	")
 			else:
 				#numerical
@@ -66,7 +68,49 @@ class C45:
 					print(indent + node.label + " > " + str(node.threshold) + " : ")
 					self.printNode(rightChild , indent + "	")
 
+	def predict(self, dataTest):
+		arrResult = []
+		for index, record in enumerate(dataTest):
+			prediction = self._predict(self.tree, record, index)
+			arrResult.append(prediction)
+		return arrResult
 
+	def _predict(self, node, dataTest, indexTest=0):
+		for indexAttribute, attribute in enumerate(self.attributes):
+			if not node.isLeaf:
+				if node.threshold is None:
+					#discrete
+					for index,child in enumerate(node.children):
+						if child.isLeaf:
+							if dataTest[indexAttribute]==self.attributes[index]:
+								return child.label
+							# print(indent + node.label + " = " + self.attributes[index] + " : " + child.label)
+						else:
+							return self._predict(child, dataTest, indexTest)
+				else:
+					#numerical
+					leftChild = node.children[0]
+					rightChild = node.children[1]
+					if leftChild.isLeaf:
+						if attribute==node.label:
+							# print('[1][<=] attribute ', attribute ,' dataTest[indexAttribute] ', dataTest[indexAttribute], ' node.threshold ', node.threshold)
+							if float(dataTest[indexAttribute]) <= float(node.threshold) :
+								return leftChild.label
+						# print(indent + node.label + " <= " + str(node.threshold) + " : " + leftChild.label)
+					else:
+						# print(indent + node.label + " <= " + str(node.threshold)+" : ")
+						return self._predict(leftChild, dataTest, indexTest)
+
+					if rightChild.isLeaf:
+						if attribute==node.label:
+							return rightChild.label
+							# print('[2][>] attribute ', attribute ,' dataTest[indexAttribute] ', dataTest[indexAttribute], ' node.threshold ', node.threshold)
+							if float(dataTest[indexAttribute]) > float(node.threshold):
+								return rightChild.label
+						# print(indent + node.label + " > " + str(node.threshold) + " : " + rightChild.label)
+					else:
+						# print(indent + node.label + " > " + str(node.threshold) + " : ")
+						return self._predict(rightChild, dataTest, indexTest)
 
 	def generateTree(self):
 		self.tree = self.recursiveGenerateTree(self.data, self.attributes)
@@ -303,16 +347,34 @@ class C45:
 	def makeModelXValidation(self, x_validation):
 		cv = KFold(n_splits = x_validation, random_state=42, shuffle=False)
 		# print(self.data[1])
+		incrementTest=1
+		
+		akurasi = 0;
 		for train_index, test_index in cv.split(self.data):
 			# print("Train Index: ", train_index, "\n")
 			# print("Test Index: ", test_index)
 			# X_train, X_test, y_train, y_test = self.data[train_index], self.data[test_index], self.data[train_index], self.data[test_index]
 			X_train = map(self.data.__getitem__, train_index)
 			X_test = map(self.data.__getitem__, test_index)
-			self.generateTreeByGivenList(X_train)
-			print('---------------------------------------------------------------------------------------------------------------------')
-			self.printTree()
+			Y_train = self._getTargetLabel(X_train)
+			Y_test = self._getTargetLabel(X_test)
 
+			#generate model berdasarkan dataset yang sudah di split
+			self.generateTreeByGivenList(X_train)
+
+			#tampung hasil klasifikasi
+			Y_predict = self.predict(X_test)
+
+			#akurasi
+			akurasi += metrics.accuracy_score(Y_test, Y_predict)
+
+			print '-----------------------------------------------------Tree ke ',incrementTest,'----------------------------------------------------------------'
+			self.printTree()
+			incrementTest += 1
+		print 'Akurasi : ', float(akurasi)/float(x_validation) * 100
+
+	def _getTargetLabel(self, lst):
+		return list( map(itemgetter(-1), lst )) 
 
 class Node:
 	def __init__(self,isLeaf, label, threshold):
