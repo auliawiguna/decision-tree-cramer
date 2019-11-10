@@ -1,4 +1,5 @@
 import math
+from sklearn.model_selection import KFold
 class C45:
 
 	"""Creates a decision tree with C4.5 algorithm"""
@@ -69,6 +70,9 @@ class C45:
 
 	def generateTree(self):
 		self.tree = self.recursiveGenerateTree(self.data, self.attributes)
+
+	def generateTreeByGivenList(self, data):
+		self.tree = self.recursiveGenerateTree(data, self.attributes)
 
 	def recursiveGenerateTree(self, curData, curAttributes):
 		allSame = self.allSameClass(curData)
@@ -204,7 +208,7 @@ class C45:
 			return gainRatio
 		elif self.criterion=='cramer':
 			return gainRatioPowCramerValue
-			
+
 		return totalGain
 
 	def chisquare(self, dataSet, main_index=0):
@@ -292,6 +296,23 @@ class C45:
 			return 0
 		else:
 			return math.log(x,2)
+	
+	def setValidationValue(self, x):
+		self.x_validation = x
+
+	def makeModelXValidation(self, x_validation):
+		cv = KFold(n_splits = x_validation, random_state=42, shuffle=False)
+		# print(self.data[1])
+		for train_index, test_index in cv.split(self.data):
+			# print("Train Index: ", train_index, "\n")
+			# print("Test Index: ", test_index)
+			# X_train, X_test, y_train, y_test = self.data[train_index], self.data[test_index], self.data[train_index], self.data[test_index]
+			X_train = map(self.data.__getitem__, train_index)
+			X_test = map(self.data.__getitem__, test_index)
+			self.generateTreeByGivenList(X_train)
+			print('---------------------------------------------------------------------------------------------------------------------')
+			self.printTree()
+
 
 class Node:
 	def __init__(self,isLeaf, label, threshold):

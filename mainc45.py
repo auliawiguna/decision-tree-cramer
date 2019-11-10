@@ -8,7 +8,14 @@ c1 = C45(
     "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/iris/iris.data", 
     "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/iris/iris.names", 
     "cramer")
+
 c1.fetchData()
 c1.preprocessData()
-c1.generateTree()
-c1.printTree()
+
+#set 10 fold cross validation
+#make model based on 10 fold cross validation
+c1.makeModelXValidation(10)
+
+# c1.preprocessData()
+# c1.generateTree()
+# c1.printTree()
