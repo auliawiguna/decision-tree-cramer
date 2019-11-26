@@ -32,6 +32,17 @@ def entropy(x):
         ent=ent-p_i* math.log(p_i,2)
     return ent
 
+def cramer(x):
+    ent=0
+    # print 'XXX'
+    for k in set(x):
+        # print k
+        # x.count(k) adalah jumlah total data, kalau di excel berarti O6
+        # len(x) adalah jumlah seluruh kasus, kalau di excel berarti O3
+        p_i=float(x.count(k))/len(x)
+        ent=ent-p_i* math.log(p_i,2)
+    return ent
+
 def gain_ratio(category,attr):
     s=0
     cat=[]
@@ -49,38 +60,16 @@ def gain_ratio(category,attr):
         s=s+p_i*entropy(cat_i)
     # s = penjumlahan entropy per value
     # gain adalah gain ratio
+    # ent_att adalah split info
     gain=entropy(cat)-s
     ent_att=entropy(att)
+    cramer(att)
     if ent_att==0:
         return 0
     else:
         # return gain
         return gain/ent_att
 
-def cramer(category,attr):
-    s=0
-    cat=[]
-    att=[]
-    for i in range(len(attr)):
-        if not attr[i]=="?":
-            cat.append(category[i])
-            att.append(attr[i])
-    for i in set(att):      
-        p_i=float(att.count(i))/len(att)
-        cat_i=[]
-        for j in range(len(cat)):
-            if att[j]==i:
-                cat_i.append(cat[j])
-        s=s+p_i*entropy(cat_i)
-    # s = penjumlahan entropy per value
-    # gain adalah gain ratio
-    gain=entropy(cat)-s
-    ent_att=entropy(att)
-    if ent_att==0:
-        return 0
-    else:
-        # return gain
-        return gain/ent_att
 
 def gain(category,attr):
     cats=[]
@@ -195,12 +184,17 @@ def grow_tree(data,category,parent,attrs_names):
 
 def add(d1,d2):
     d=d1
-    for i in d2:
-        if d.has_key(i):
-            d[i]=d[i]+d2[i]
-        else:
-            d[i]=d2[i]
-    return d
+    if d2 is None:
+        d['unknown']=0
+        return d
+        # return d['unknown'] = 0
+    else:
+        for i in d2:
+            if d.has_key(i):
+                d[i]=d[i]+d2[i]
+            else:
+                d[i]=d2[i]
+        return d
 
 def decision(root,obs,attrs_names,p):
     if root.hasChildNodes():

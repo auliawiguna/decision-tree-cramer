@@ -76,8 +76,11 @@ class C45(BaseEstimator, ClassifierMixin):
         prediction = []
         for i in range(len(X)):
             answerlist = decision(root,X[i],self.attrNames,1)
-            answerlist = sorted(answerlist.items(), key=lambda x:x[1], reverse = True )
-            answer = answerlist[0][0]
+            if answerlist is None:
+                answer = 'unknown'
+            else:
+                answerlist = sorted(answerlist.items(), key=lambda x:x[1], reverse = True )
+                answer = answerlist[0][0]
             prediction.append((self.resultType)(answer))
         return prediction
 
