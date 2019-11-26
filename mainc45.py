@@ -5,8 +5,10 @@ from c45 import C45
 #2nd parameter = dataset labels
 #3rd parameter = method, information_gain or gain_ratio or cramer
 c1 = C45(
-    "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/breast-cancer-wisconsin/breast-cancer-wisconsin.data", 
-    "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/breast-cancer-wisconsin/breast-cancer-wisconsin.names", 
+    "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/ionosphere/ionosphere.data", 
+    "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/ionosphere/ionosphere.names", 
+    # "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/breast-cancer-wisconsin/breast-cancer-wisconsin.data", 
+    # "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/breast-cancer-wisconsin/breast-cancer-wisconsin.names", 
     # "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/iris/iris.data", 
     # "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/iris/iris.names", 
     # "/Users/ahmadauliawiguna/PycharmProjects/Pelatihan/cramer/data/iris/iris2.data", 
