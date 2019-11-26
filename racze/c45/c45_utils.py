@@ -28,50 +28,82 @@ def isnum(attr):
 def entropy(x):
     ent=0
     for k in set(x):
+        # x.count(k) adalah jumlah total data, kalau di excel berarti P & Q
+        # len(x) adalah jumlah seluruh kasus, kalau di excel berarti O6
         p_i=float(x.count(k))/len(x)
-        ent=ent-p_i* math.log(p_i,2)
+        ent=ent - p_i* math.log(p_i,2)
     return ent
 
-def cramer(x):
-    ent=0
-    # print 'XXX'
+def chi(x, cat):
+    ent=0.0
+    # print 'START CRAMER--------------------------------------'
+    # print 'Jumlah x ', len(x)
+    # print 'x ', x
+    # print 'Jumlah set x ', set(x)
+    totalPerKelas = 0
     for k in set(x):
-        # print k
-        # x.count(k) adalah jumlah total data, kalau di excel berarti O6
-        # len(x) adalah jumlah seluruh kasus, kalau di excel berarti O3
-        p_i=float(x.count(k))/len(x)
-        ent=ent-p_i* math.log(p_i,2)
+        totalPerKelas += x.count(k)
+    for k in set(x):
+        # print 'Jumlah K ', x.count(k)
+        # print 'k ', k
+        # print 'Jumlah kelas k ', k, ' total ', cat.count(k)
+        # x.count(k) adalah jumlah total data, kalau di excel berarti P6
+        # len(x) adalah jumlah seluruh kasus, kalau di excel berarti O6
+        p_i = float(cat.count(k)) * float(len(x)) / float(len(cat))
+        p_i = math.pow( float(x.count(k)) - float(p_i), 2) / float(x.count(k))
+        # print 'cat.count(k) ', cat.count(k)
+        # print 'len(x) ', len(x)
+        # print 'len(cat) ', len(cat)
+        # print 'p_i ', p_i
+        ent = float(ent) + float(p_i)
+    # print 'END CRAMER-------------------------------------- ', ent
     return ent
 
-def gain_ratio(category,attr):
+def cramer(countChase, chi_square):
+    return math.sqrt(chi_square / (countChase * (2-1)))
+
+def gain_ratio(category,attr,method):
     s=0
+    chi_square=0.0
     cat=[]
     att=[]
     for i in range(len(attr)):
         if not attr[i]=="?":
             cat.append(category[i])
             att.append(attr[i])
-    for i in set(att):      
+    # print 'att ', att
+    # print 'cat ', cat
+    for i in set(att):
+        #att.count(i)) = jumlah per atribut untuk semua kelas
+        #len(att) = jumlah total kasus
+        #p_i = jumlah per atribut untuk semua kelas / jumlah total kasus
         p_i=float(att.count(i))/len(att)
         cat_i=[]
         for j in range(len(cat)):
             if att[j]==i:
                 cat_i.append(cat[j])
-        s=s+p_i*entropy(cat_i)
+        s = s + p_i * entropy(cat_i)
+        chi_square = float(chi_square) + float(chi(cat_i, cat))
+
+    cramerValue = cramer(len(att), chi_square)
+    # print chi_square, ' - ' , len(att) , ' - ', cramerValue, ' ________________________________________________________________________________________________________________________________________________'
     # s = penjumlahan entropy per value
-    # gain adalah gain ratio
+    # gain adalah information gain
     # ent_att adalah split info
+    # entropy(cat) adalah Entropy Total
     gain=entropy(cat)-s
     ent_att=entropy(att)
-    cramer(att)
     if ent_att==0:
         return 0
     else:
         # return gain
-        return gain/ent_att
+        if method=='cramer':
+            return math.pow( (gain/ent_att), cramerValue)
+        else:
+            return gain/ent_att
 
 
-def gain(category,attr):
+def gain(category, attr):
     cats=[]
     for i in range(len(attr)):
         if not attr[i]=="?":
@@ -112,7 +144,7 @@ def division_point(category,attr):
             div_point.append(i)
     return att[div_point[gains.index(min(gains))]]
 
-def grow_tree(data,category,parent,attrs_names):
+def grow_tree(data,category,parent,attrs_names,method):
     if len(set(category))>1:
         
         division=[]
@@ -125,7 +157,7 @@ def grow_tree(data,category,parent,attrs_names):
                     division.append(gain(category,data[i]))           
                 else:
                     #field kategorikal
-                    division.append(gain_ratio(category,data[i]))
+                    division.append(gain_ratio(category,data[i], method))
         if max(division)==0:
             num_max=0
             for cat in set(category):
@@ -156,9 +188,9 @@ def grow_tree(data,category,parent,attrs_names):
                 if len(l_son_category)>0 and len(r_son_category)>0:
                     p_l=float(len(l_son_category))/(len(data[index_selected])-data[index_selected].count("?"))
                     son=ET.SubElement(parent,name_selected,{'value':str(div_point),"tanda":"kurang dari","flag":"l","p":str(round(p_l,3))})
-                    grow_tree(l_son_data,l_son_category,son,attrs_names)
+                    grow_tree(l_son_data,l_son_category,son,attrs_names,method)
                     son=ET.SubElement(parent,name_selected,{'value':str(div_point),"tanda":"lebih dari sama dengan","flag":"r","p":str(round(1-p_l,3))})
-                    grow_tree(r_son_data,r_son_category,son,attrs_names)
+                    grow_tree(r_son_data,r_son_category,son,attrs_names,method)
                 else:
                     num_max=0
                     for cat in set(category):
@@ -178,7 +210,7 @@ def grow_tree(data,category,parent,attrs_names):
                                 for j in range(len(data)):
                                     son_data[j].append(data[j][i])
                         son=ET.SubElement(parent,name_selected,{'value':k,"flag":"m",'p':str(round(float(len(son_category))/(len(data[index_selected])-data[index_selected].count("?")),3))}) 
-                        grow_tree(son_data,son_category,son,attrs_names)   
+                        grow_tree(son_data,son_category,son,attrs_names,method)   
     else:
         parent.text=category[0]
 

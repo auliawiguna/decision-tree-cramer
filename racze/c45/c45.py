@@ -6,6 +6,7 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_array, check_is_fitted, check_X_y
 
 from .c45_utils import decision, grow_tree
+method = 'information_gain'
 
 class C45(BaseEstimator, ClassifierMixin):
     """A C4.5 tree classifier.
@@ -39,7 +40,13 @@ class C45(BaseEstimator, ClassifierMixin):
     array([ 1.     ,  0.93...,  0.86...,  0.93...,  0.93...,
             0.93...,  0.93...,  1.     ,  0.93...,  1.      ])
     """
-    def __init__(self, attrNames=None):
+    def __init__(self, attrNames=None, method=None):
+        if method is None:
+            self.method = 'information_gain'
+            method = 'information_gain'
+        else:
+            self.method = method
+            method = method
         if attrNames is not None:
             attrNames = [''.join(i for i in x if i.isalnum()).replace(' ', '_') for x in attrNames]
         self.attrNames = attrNames
@@ -64,7 +71,7 @@ class C45(BaseEstimator, ClassifierMixin):
             for j in range(len(self.attrNames)):
                 data[j].append(self.X_[i][j])
         root = ET.Element('DecisionTree')
-        grow_tree(data,categories,root,self.attrNames)
+        grow_tree(data, categories, root, self.attrNames, self.method)
         self.tree_ = ET.tostring(root, encoding="utf8").decode('utf8')
         return self
 
