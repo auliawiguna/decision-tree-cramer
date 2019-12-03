@@ -12,7 +12,7 @@ from sklearn.metrics import confusion_matrix
 
 iris = load_breast_cancer()
 
-dataset = np.genfromtxt('hayes-roth.csv', dtype=None, delimiter=',') 
+dataset = np.genfromtxt('newthyroid_discreet.csv', dtype=None, delimiter=';') 
 header = dataset[0, 0:-1]
 allDataset = dataset[1:, : ]
 X = dataset[1:,0:dataset.shape[1]-1] #ambil kolom dari kolom ke 0 sampai ke kolom 2 dari kanan
