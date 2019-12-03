@@ -72,7 +72,7 @@ class C45(BaseEstimator, ClassifierMixin):
                 data[j].append(self.X_[i][j])
         root = ET.Element('DecisionTree')
         grow_tree(data, categories, root, self.attrNames, self.method)
-        self.tree_ = ET.tostring(root, encoding="utf8").decode('utf8')
+        self.tree_ = ET.tostring(root, encoding="utf8", method='xml').decode('utf8')
         return self
 
     def predict(self, X):

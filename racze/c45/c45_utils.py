@@ -98,6 +98,7 @@ def gain_ratio(category,attr,method):
     else:
         # return gain
         if method=='cramer':
+            return gain/ent_att * cramerValue
             return math.pow( (gain/ent_att), cramerValue)
         else:
             return gain/ent_att
