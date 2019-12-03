@@ -57,12 +57,28 @@ def chi(x, cat):
         # print 'p_i ', p_i
         ent = float(ent) + float(p_i)
     # print 'END CRAMER-------------------------------------- ', ent
-    return ent
+    result = {}
+    result["chi"] = ent
+    result["jumlah_kasus"] = totalPerKelas    
+    return result
 
-def cramer(countChase, chi_square):
-    return math.sqrt(chi_square / (countChase * (2-1)))
+def cramer(countChase, chi_square, attrs_names, jumlah_kasus):
+    #Chi pangkat dua
+    #countChase = ukuran contoh total
+    chi_square = math.pow(chi_square, 2)
 
-def gain_ratio(category,attr,method):
+    #bandingkan jumlah baris dan kolom, ambil yang jumlahnya lebih kecil
+    if len(attrs_names) < countChase:
+        jumlahTerkecil = len(attrs_names)
+    else:
+        jumlahTerkecil = countChase
+
+    if jumlah_kasus * (jumlahTerkecil-1)==0:
+        return 0
+    else:
+        return math.sqrt(chi_square / (jumlah_kasus * (jumlahTerkecil-1)))
+
+def gain_ratio(category, attr, method, attrs_names):
     s=0
     chi_square=0.0
     cat=[]
@@ -71,22 +87,20 @@ def gain_ratio(category,attr,method):
         if not attr[i]=="?":
             cat.append(category[i])
             att.append(attr[i])
-    # print 'att ', att
-    # print 'cat ', cat
     for i in set(att):
         #att.count(i)) = jumlah per atribut untuk semua kelas
         #len(att) = jumlah total kasus
         #p_i = jumlah per atribut untuk semua kelas / jumlah total kasus
-        p_i=float(att.count(i))/len(att)
+        p_i = float(att.count(i))/len(att)
         cat_i=[]
         for j in range(len(cat)):
             if att[j]==i:
                 cat_i.append(cat[j])
         s = s + p_i * entropy(cat_i)
-        chi_square = float(chi_square) + float(chi(cat_i, cat))
+        nilai_chi = chi(cat_i, cat)
+        chi_square = float(chi_square) + float(nilai_chi['chi'])
 
-    cramerValue = cramer(len(att), chi_square)
-    # print chi_square, ' - ' , len(att) , ' - ', cramerValue, ' ________________________________________________________________________________________________________________________________________________'
+    cramerValue = cramer(len(att), chi_square, attrs_names, nilai_chi['jumlah_kasus'])
     # s = penjumlahan entropy per value
     # gain adalah information gain
     # ent_att adalah split info
@@ -99,7 +113,7 @@ def gain_ratio(category,attr,method):
         # return gain
         if method=='cramer':
             return gain/ent_att * cramerValue
-            return math.pow( (gain/ent_att), cramerValue)
+            # return math.pow( (gain/ent_att), cramerValue)
         else:
             return gain/ent_att
 
@@ -158,7 +172,7 @@ def grow_tree(data,category,parent,attrs_names,method):
                     division.append(gain(category,data[i]))           
                 else:
                     #field kategorikal
-                    division.append(gain_ratio(category,data[i], method))
+                    division.append(gain_ratio(category,data[i], method, attrs_names))
         if max(division)==0:
             num_max=0
             for cat in set(category):
